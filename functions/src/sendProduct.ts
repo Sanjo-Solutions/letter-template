@@ -2,22 +2,23 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import Stripe from "stripe"
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses"
 import type {
   APIGatewayProxyEventV2,
   APIGatewayProxyResultV2,
 } from "aws-lambda"
+import sendgridMail from "@sendgrid/mail"
 
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
       STRIPE_API_SECRET_KEY: string
       STRIPE_WEBHOOK_SECRET_KEY: string
+      SENDGRID_API_KEY: string
     }
   }
 }
 
-const ses = new SESClient({ region: "eu-central-1" })
+sendgridMail.setApiKey(process.env.SENDGRID_API_KEY)
 const stripe = new Stripe(process.env.STRIPE_API_SECRET_KEY, {
   apiVersion: "2023-08-16",
 })
@@ -70,44 +71,35 @@ export async function handler(
 async function sendMail({ to }: any) {
   // TODO: English version
 
-  const command = new SendEmailCommand({
-    Destination: {
-      ToAddresses: [to],
+  const message = {
+    to,
+    from: {
+      name: "Sanjo Solutions",
+      email: "support@sanjo-solutions.com",
     },
-    Message: {
-      Body: {
-        Text: {
-          Data:
-            "Sehr geehrte Damen und Herren,\n" +
-            "\n" +
-            "hier die Links für die verschiedenen Formate der Geschäftsbrief Vorlage (DIN 5008):\n" +
-            "* Google Docs: https://docs.google.com/document/d/1xAAGrhdFho0eZIqAjiMKx2Aw_JtSMChmyYrOiGfoHrk/copy?usp=sharing\n" +
-            "* Microsoft Word Dokument: https://docs.google.com/document/d/1xAAGrhdFho0eZIqAjiMKx2Aw_JtSMChmyYrOiGfoHrk/export?format=doc\n" +
-            "* Open Document Format: https://docs.google.com/document/d/1xAAGrhdFho0eZIqAjiMKx2Aw_JtSMChmyYrOiGfoHrk/export?format=odt\n" +
-            "\n" +
-            "Mit freundlichen Grüßen\n" +
-            "Jonas Aschenbrenner",
-          Charset: "UTF-8",
-        },
-        Html: {
-          Data:
-            "Sehr geehrte Damen und Herren,<br>" +
-            "<br>" +
-            "hier die Links für die verschiedenen Formate der Geschäftsbrief Vorlage (DIN 5008):<br>" +
-            '* <a href="https://docs.google.com/document/d/1xAAGrhdFho0eZIqAjiMKx2Aw_JtSMChmyYrOiGfoHrk/copy?usp=sharing">Google Docs</a><br>' +
-            '* <a href="https://docs.google.com/document/d/1xAAGrhdFho0eZIqAjiMKx2Aw_JtSMChmyYrOiGfoHrk/export?format=doc">Microsoft Word Dokument</a><br>' +
-            '* <a href="https://docs.google.com/document/d/1xAAGrhdFho0eZIqAjiMKx2Aw_JtSMChmyYrOiGfoHrk/export?format=odt">Open Document Format</a><br>' +
-            "<br>" +
-            "Mit freundlichen Grüßen<br>" +
-            "Jonas Aschenbrenner",
-          Charset: "UTF-8",
-        },
-      },
-
-      Subject: { Data: "Geschäftsbrief Vorlage (DIN 5008)", Charset: "UTF-8" },
-    },
-    Source: "no-reply@sanjo-solutions.com",
-  })
-
-  await ses.send(command)
+    subject: "Geschäftsbrief Vorlage (DIN 5008)",
+    text:
+      "Sehr geehrte Damen und Herren,\n" +
+      "\n" +
+      "hier die Links für die verschiedenen Formate:\n" +
+      "* Google Docs: https://docs.google.com/document/d/1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY/copy?usp=sharing\n" +
+      "* Microsoft Word Dokument: https://docs.google.com/document/d/1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY/export?format=doc\n" +
+      "* Open Document Format (auch für LibreOffice): https://docs.google.com/document/d/1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY/export?format=odt\n" +
+      "\n" +
+      "Mit freundlichen Grüßen\n" +
+      "Jonas Aschenbrenner\n" +
+      "von Sanjo Solutions",
+    html:
+      "Sehr geehrte Damen und Herren,<br>" +
+      "<br>" +
+      "hier die Links für die verschiedenen Formate:<br>" +
+      '* <a href="https://docs.google.com/document/d/1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY/copy?usp=sharing">Google Docs</a><br>' +
+      '* <a href="https://docs.google.com/document/d/1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY/export?format=doc">Microsoft Word Dokument</a><br>' +
+      '* <a href="https://docs.google.com/document/d/1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY/export?format=odt">Open Document Format (auch für LibreOffice)</a><br>' +
+      "<br>" +
+      "Mit freundlichen Grüßen<br>" +
+      "Jonas Aschenbrenner<br>" +
+      "von Sanjo Solutions",
+  }
+  await sendgridMail.send(message)
 }

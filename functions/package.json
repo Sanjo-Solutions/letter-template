@@ -2,8 +2,8 @@
   "name": "functions",
   "type": "module",
   "scripts": {
-    "build": "esbuild src/sendProduct.ts --bundle --platform=node --target=node18 --outdir=build/ --sourcemap --minify --external:@aws-sdk/client-ses",
-    "build:watch": "esbuild src/sendProduct.ts --watch --bundle --platform=node --target=node18 --outdir=build/ --sourcemap --minify --external:@aws-sdk/client-ses",
+    "build": "esbuild src/sendProduct.ts --bundle --platform=node --target=node18 --outdir=build/ --sourcemap --minify",
+    "build:watch": "esbuild src/sendProduct.ts --watch --bundle --platform=node --target=node18 --outdir=build/ --sourcemap --minify",
     "deploy": "cd build && 7z a sendProduct.zip sendProduct.js sendProduct.js.map && aws lambda update-function-code --profile sanjo-solutions --function-name sendProduct --zip-file fileb://sendProduct.zip"
   },
   "engines": {
@@ -11,7 +11,6 @@
   },
   "main": "lib/sendProduct.js",
   "dependencies": {
-    "@aws-sdk/client-ses": "^3.418.0",
     "@sendgrid/mail": "^7.7.0",
     "stripe": "^13.7.0"
   },
