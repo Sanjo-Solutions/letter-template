@@ -1,7 +1,15 @@
 import { test, expect } from "@playwright/test"
 
-test("sendProduct", async ({ page }) => {
-  await page.goto("https://buy.stripe.com/test_4gwg12cg6gKh4AE288")
+test("sendProduct for personal use", async ({ page }) => {
+  await buyProduct(page, "https://buy.stripe.com/test_4gwg12cg6gKh4AE288")
+})
+
+test.only("sendProduct for business use", async ({ page }) => {
+  await buyProduct(page, "https://buy.stripe.com/test_fZeeWY1Bs2Tr0kofYZ")
+})
+
+async function buyProduct(page, url) {
+  await page.goto(url)
 
   await page.getByLabel("Email").fill("jonas.aschenbrenner@gmail.com")
   await page.getByTestId("card-tab-button").click()
@@ -14,4 +22,4 @@ test("sendProduct", async ({ page }) => {
   await page.waitForSelector('text="Herunterladen"', {
     timeout: 60000,
   })
-})
+}

@@ -20,10 +20,12 @@ declare global {
 
 const data = {
   private: {
+    subject: "Geschäftsbrief Vorlage (DIN 5008)",
     documentID: "1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY",
     licenseURL: "https://letter-template.sanjo-solutions.com/Lizenz.txt",
   },
   business: {
+    subject: "Geschäftsbrief Vorlage für Unternehmen (DIN 5008)",
     documentID: "1pJ9snk8Nk2qWKEZH_wG7XOaLwH9D4TZrLpaiyo4crT4",
     licenseURL:
       "https://letter-template.sanjo-solutions.com/Lizenz_Geschaeftlich.txt",
@@ -88,10 +90,12 @@ export async function handler(
 
 async function sendMail({
   to,
+  subject,
   documentID,
   licenseURL,
 }: {
   to: string
+  subject: string
   documentID: string
   licenseURL: string
 }) {
@@ -103,7 +107,7 @@ async function sendMail({
       name: "Sanjo Solutions",
       email: "support@sanjo-solutions.com",
     },
-    subject: "Geschäftsbrief Vorlage (DIN 5008)",
+    subject,
     text:
       "Sehr geehrte Damen und Herren,\n" +
       "\n" +
@@ -124,6 +128,8 @@ async function sendMail({
       `* <a href="https://docs.google.com/document/d/${documentID}/copy?usp=sharing">Google Docs</a><br>` +
       `* <a href="https://docs.google.com/document/d/${documentID}/export?format=doc">Microsoft Word Dokument</a><br>` +
       `* <a href="https://docs.google.com/document/d/${documentID}/export?format=odt">Open Document Format (auch für LibreOffice)</a><br>` +
+      "<br>" +
+      `Die Lizenz können sie <a href="${licenseURL}">hier</a> herunterladen.<br>` +
       "<br>" +
       "Mit freundlichen Grüßen<br>" +
       "Jonas Aschenbrenner<br>" +

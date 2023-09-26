@@ -1,6 +1,6 @@
 Alle Mitarbeiter (auch freie Mitarbeiter) des Unternehmens, für das Sie den Kauf getätigt haben, dürfen folgendes:
 * die Geschäftsbriefvorlage verwenden, um Briefe für das Unternehmen zu erstellen.
-	Diese Briefe dürfen beliebig verwendet werden.
+  Diese Briefe dürfen beliebig verwendet werden.
 * die Bearbeitungen der Vorlage für die Verwendung für das Unternehmen.
 
 Es ist erlaubt, dass Software auf Basis der Vorlage Briefe für das Unternehmen erstellt,

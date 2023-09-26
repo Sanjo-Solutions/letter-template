@@ -16,7 +16,8 @@ export function navigationItem(compose, name, path) {
   if (isActivePage(compose, path)) {
     return `<span
       href="${path}"
-      class="nav-link px-2 link-secondary"
+      class="nav-link px-2 link-body-emphasis"
+      style="font-weight: 600;"
     >${name}</span>`
   } else {
     return `<a
