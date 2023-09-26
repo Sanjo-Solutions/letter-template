@@ -2,9 +2,11 @@
   "name": "functions",
   "type": "module",
   "scripts": {
-    "build": "esbuild src/sendProduct.ts --bundle --platform=node --target=node18 --outdir=build/ --sourcemap --minify",
-    "build:watch": "esbuild src/sendProduct.ts --watch --bundle --platform=node --target=node18 --outdir=build/ --sourcemap --minify",
-    "deploy": "cd build && 7z a sendProduct.zip sendProduct.js sendProduct.js.map && aws lambda update-function-code --profile sanjo-solutions --function-name sendProduct --zip-file fileb://sendProduct.zip"
+    "build": "esbuild src/sendProduct.ts --bundle --platform=node --target=node18 --outdir=build/sendProduct/ --sourcemap --minify",
+    "build:watch": "esbuild src/sendProduct.ts --watch --bundle --platform=node --target=node18 --outdir=build/sendProduct/ --sourcemap --minify",
+    "deploy": "cd build/sendProduct && 7z a sendProduct.zip sendProduct.js sendProduct.js.map && aws lambda update-function-code --profile sanjo-solutions --function-name sendProduct --zip-file fileb://sendProduct.zip",
+    "run": "ts-node-esm -r dotenv/config src/run.ts",
+    "connect-to-stripe": "stripe listen --events payment_intent.succeeded --forward-to localhost:8080/sendProduct"
   },
   "engines": {
     "node": "18"
@@ -15,9 +17,20 @@
     "stripe": "^13.7.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.22.20",
+    "@babel/preset-typescript": "^7.23.0",
     "@types/aws-lambda": "^8.10.122",
+    "@types/express": "^4.17.18",
+    "@types/jest": "^29.5.5",
     "@types/node": "^18.18.0",
+    "babel-jest": "^29.7.0",
+    "dotenv": "^16.3.1",
     "esbuild": "^0.19.3",
+    "express": "^4.18.2",
+    "jest": "^29.7.0",
+    "ts-jest-resolver": "^2.0.1",
+    "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },
   "private": true

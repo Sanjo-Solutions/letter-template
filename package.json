@@ -5,7 +5,8 @@
     "deploy": "aws s3 sync public s3://letter-template.sanjo-solutions.com --delete --profile sanjo-solutions --exclude .DS_Store --exclude \"*/.DS_Store\"",
     "test": "playwright test",
     "build": "compose --output public",
-    "build:watch": "compose --watch --output public"
+    "build:watch": "compose --watch --output public",
+    "serve": "cd public && python -m http.server 80"
   },
   "devDependencies": {
     "@playwright/test": "^1.38.1",

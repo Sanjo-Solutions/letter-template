@@ -11,15 +11,27 @@ import sendgridMail from "@sendgrid/mail"
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      STRIPE_API_SECRET_KEY: string
-      STRIPE_WEBHOOK_SECRET_KEY: string
-      SENDGRID_API_KEY: string
+      STRIPE_API_SECRET_KEY?: string
+      STRIPE_WEBHOOK_SECRET_KEY?: string
+      SENDGRID_API_KEY?: string
     }
   }
 }
 
-sendgridMail.setApiKey(process.env.SENDGRID_API_KEY)
-const stripe = new Stripe(process.env.STRIPE_API_SECRET_KEY, {
+const data = {
+  private: {
+    documentID: "1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY",
+    licenseURL: "https://letter-template.sanjo-solutions.com/Lizenz.txt",
+  },
+  business: {
+    documentID: "1pJ9snk8Nk2qWKEZH_wG7XOaLwH9D4TZrLpaiyo4crT4",
+    licenseURL:
+      "https://letter-template.sanjo-solutions.com/Lizenz_Geschaeftlich.txt",
+  },
+}
+
+sendgridMail.setApiKey(process.env.SENDGRID_API_KEY!)
+const stripe = new Stripe(process.env.STRIPE_API_SECRET_KEY!, {
   apiVersion: "2023-08-16",
 })
 
@@ -35,9 +47,10 @@ export async function handler(
         stripeEvent = stripe.webhooks.constructEvent(
           event.body,
           signature,
-          process.env.STRIPE_WEBHOOK_SECRET_KEY,
+          process.env.STRIPE_WEBHOOK_SECRET_KEY!,
         )
       } catch (error: any) {
+        console.error(error)
         return {
           statusCode: 400,
           body: `Webhook Error: ${error.message}`,
@@ -47,7 +60,12 @@ export async function handler(
       const paymentIntent = stripeEvent.data.object as any
       if (stripeEvent.type === "payment_intent.succeeded") {
         const emailAddress = paymentIntent.receipt_email
-        await sendMail({ to: emailAddress })
+        const data2 =
+          data[paymentIntent.amount === 2499 ? "business" : "private"]
+        await sendMail({
+          to: emailAddress,
+          ...data2,
+        })
       }
 
       return {
@@ -68,7 +86,15 @@ export async function handler(
   }
 }
 
-async function sendMail({ to }: any) {
+async function sendMail({
+  to,
+  documentID,
+  licenseURL,
+}: {
+  to: string
+  documentID: string
+  licenseURL: string
+}) {
   // TODO: English version
 
   const message = {
@@ -82,9 +108,11 @@ async function sendMail({ to }: any) {
       "Sehr geehrte Damen und Herren,\n" +
       "\n" +
       "hier die Links für die verschiedenen Formate:\n" +
-      "* Google Docs: https://docs.google.com/document/d/1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY/copy?usp=sharing\n" +
-      "* Microsoft Word Dokument: https://docs.google.com/document/d/1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY/export?format=doc\n" +
-      "* Open Document Format (auch für LibreOffice): https://docs.google.com/document/d/1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY/export?format=odt\n" +
+      `* Google Docs: https://docs.google.com/document/d/${documentID}/copy?usp=sharing\n` +
+      `* Microsoft Word Dokument: https://docs.google.com/document/d/${documentID}/export?format=doc\n` +
+      `* Open Document Format (auch für LibreOffice): https://docs.google.com/document/d/${documentID}/export?format=odt\n` +
+      "\n" +
+      `Die Lizenz können sie hier herunterladen: ${licenseURL}\n` +
       "\n" +
       "Mit freundlichen Grüßen\n" +
       "Jonas Aschenbrenner\n" +
@@ -93,9 +121,9 @@ async function sendMail({ to }: any) {
       "Sehr geehrte Damen und Herren,<br>" +
       "<br>" +
       "hier die Links für die verschiedenen Formate:<br>" +
-      '* <a href="https://docs.google.com/document/d/1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY/copy?usp=sharing">Google Docs</a><br>' +
-      '* <a href="https://docs.google.com/document/d/1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY/export?format=doc">Microsoft Word Dokument</a><br>' +
-      '* <a href="https://docs.google.com/document/d/1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY/export?format=odt">Open Document Format (auch für LibreOffice)</a><br>' +
+      `* <a href="https://docs.google.com/document/d/${documentID}/copy?usp=sharing">Google Docs</a><br>` +
+      `* <a href="https://docs.google.com/document/d/${documentID}/export?format=doc">Microsoft Word Dokument</a><br>` +
+      `* <a href="https://docs.google.com/document/d/${documentID}/export?format=odt">Open Document Format (auch für LibreOffice)</a><br>` +
       "<br>" +
       "Mit freundlichen Grüßen<br>" +
       "Jonas Aschenbrenner<br>" +
