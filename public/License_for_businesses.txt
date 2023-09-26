@@ -1,0 +1,8 @@
+All employees (also freelancers) of the company, for which the purchase has been made, are allowed to do the following:
+* using the letter template to create letters for the company.
+  Those letters can be used in any way.
+* editing the template for use for the company.
+
+It's allowed that software creates letters based on the template for the company.
+
+If you have further requirements, you can send me a request to jonas@sanjo-solutions.com.
