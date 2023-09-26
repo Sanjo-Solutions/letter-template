@@ -1,0 +1,10 @@
+{
+  "email": {
+    "api_key": "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",
+    "from": "jonas.aschenbrenner@gmail.com"
+  },
+  "stripe": {
+    "api_secret_key": "sk_test_51NtxBsESBpgjLODgjmy5mBMbbyWqTalKcBYJJvrsHKpqPamL2Z1hrFXGDsNqUuU0dS5mIBVZlA4ip9bSDzprLlXI00Pfd12z12",
+    "webhook_secret_key": "whsec_48edde379fadf72d69162dda3ee53a7b2d4b0b87b432ec0edf2b859b55cdb2ef"
+  }
+}

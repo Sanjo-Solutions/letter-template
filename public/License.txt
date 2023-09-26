@@ -1,0 +1,4 @@
+You can use the letter template to create letters.
+It's allowed to edit the template for private use.
+You can use concrete letters, that have been created based on the
+template, in any way.

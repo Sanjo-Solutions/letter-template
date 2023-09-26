@@ -2,32 +2,24 @@
   "name": "functions",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "serve": "npm run build && firebase emulators:start --only functions",
-    "shell": "npm run build && firebase functions:shell",
-    "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "build": "esbuild src/sendProduct.ts --bundle --platform=node --target=node18 --outdir=build/ --sourcemap --minify --external:@aws-sdk/client-ses",
+    "build:watch": "esbuild src/sendProduct.ts --watch --bundle --platform=node --target=node18 --outdir=build/ --sourcemap --minify --external:@aws-sdk/client-ses",
+    "deploy": "cd build && 7z a sendProduct.zip sendProduct.js sendProduct.js.map && aws lambda update-function-code --profile sanjo-solutions --function-name sendProduct --zip-file fileb://sendProduct.zip"
   },
   "engines": {
-    "node": "16"
+    "node": "18"
   },
-  "main": "lib/index.js",
+  "main": "lib/sendProduct.js",
   "dependencies": {
-    "@google-cloud/local-auth": "^1.0.1",
-    "@googleapis/gmail": "^0.3.1",
-    "@sanjo/array": "^1.0.6",
-    "@sanjo/read-json": "^1.0.0",
-    "firebase-admin": "^10.0.2",
-    "firebase-functions": "^3.18.1",
-    "google-auth-library": "^7.14.0",
-    "lodash.isequal": "^4.5.0",
-    "moment": "^2.29.1"
+    "@aws-sdk/client-ses": "^3.418.0",
+    "@sendgrid/mail": "^7.7.0",
+    "stripe": "^13.7.0"
   },
   "devDependencies": {
-    "@types/lodash.isequal": "^4.5.6",
-    "firebase-functions-test": "^0.2.0",
-    "typescript": "^4.6.2"
+    "@types/aws-lambda": "^8.10.122",
+    "@types/node": "^18.18.0",
+    "esbuild": "^0.19.3",
+    "typescript": "^5.2.2"
   },
   "private": true
 }

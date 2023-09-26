@@ -1,3 +1,9 @@
 .firebase
 firebase-debug.log
 din-5008-schreiben-*.json
+node_modules/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/public/*.html
+/functions/build
