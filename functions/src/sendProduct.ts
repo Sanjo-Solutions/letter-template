@@ -191,16 +191,7 @@ export async function handler(
         }
       }
 
-      if (stripeEvent.type === "payment_intent.succeeded") {
-        const paymentIntent = stripeEvent.data.object as any
-        const emailAddress = paymentIntent.receipt_email
-        const data2 =
-          data.de[paymentIntent.amount === 2499 ? "business" : "private"]
-        await sendMail({
-          to: emailAddress,
-          ...data2,
-        })
-      } else if (stripeEvent.type === "checkout.session.completed") {
+      if (stripeEvent.type === "checkout.session.completed") {
         const checkoutSession = stripeEvent.data.object as any
         const emailAddress = checkoutSession.customer_details.email
         const data2 = paymentLinkIDToData.get(checkoutSession.payment_link)
