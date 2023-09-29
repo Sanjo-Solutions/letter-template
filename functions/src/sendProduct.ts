@@ -119,7 +119,7 @@ const data = {
   de: {
     private: {
       subject: "Geschäftsbrief Vorlage (DIN 5008)",
-      documentID: "1Rz2qY3GBsNASEFSUmR6RHCmiEklPyesxeNYG4hvIdJY",
+      documentID: "17eJk9198HKYCmCGO3nKCun-Ij-u7gQhEi7MRW_2k0HU",
       licenseURL: "https://letter-template.sanjo-solutions.com/Lizenz.txt",
       generateText: generateTextGerman,
       generateHTML: generateHTMLGerman,
