@@ -4,7 +4,7 @@
   "scripts": {
     "build": "esbuild src/sendProduct.ts --bundle --platform=node --target=node18 --outdir=build/sendProduct/ --sourcemap --minify",
     "build:watch": "esbuild src/sendProduct.ts --watch --bundle --platform=node --target=node18 --outdir=build/sendProduct/ --sourcemap --minify",
-    "deploy": "cd build/sendProduct && 7z a sendProduct.zip sendProduct.js sendProduct.js.map && aws lambda update-function-code --profile sanjo-solutions --function-name sendProduct --zip-file fileb://sendProduct.zip",
+    "deploy": "cd build/sendProduct && zip -r sendProduct.zip sendProduct.js sendProduct.js.map && aws lambda update-function-code --function-name sendProduct --zip-file fileb://sendProduct.zip",
     "run": "ts-node-esm -r dotenv/config src/run.ts",
     "connect-to-stripe": "stripe listen --events checkout.session.completed --forward-to localhost:8080/sendProduct"
   },

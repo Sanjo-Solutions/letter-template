@@ -1,0 +1,35 @@
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Deploy static files
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'blocks/*'
+      - 'layouts/*'
+      - 'pages/*'
+      - 'public/*'
+      - 'package-lock.json'
+
+env:
+  AWS_ACCESS_KEY_ID: AKIAX44ZXNASLCNATXES
+  AWS_DEFAULT_REGION: eu-central-1
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install, build and deploy
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build
+    - run: npm run deploy
+      env:
+        super_secret: ${{ secrets.SuperSecret }}
