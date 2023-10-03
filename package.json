@@ -7,7 +7,7 @@
     "build": "compose --output public",
     "build:watch": "compose --watch --output public",
     "serve": "cd public && python -m http.server 80",
-    "invalidate": "aws cloudfront create-invalidation --distribution-id ESVU9XLT0LYAM --paths '/*'"
+    "invalidate": "aws cloudfront create-invalidation --distribution-id ESVU9XLT0LYAM --paths /*"
   },
   "devDependencies": {
     "@playwright/test": "^1.38.1",
