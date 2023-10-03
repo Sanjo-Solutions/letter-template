@@ -11,7 +11,7 @@ on:
       - 'pages/*'
       - 'public/*'
       - 'package-lock.json'
-      - 'workflows/deploy_static_files.yml'
+      - '.github/workflows/deploy_static_files.yml'
 
 concurrency: 'deploy_static_files'
 
