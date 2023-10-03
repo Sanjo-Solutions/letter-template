@@ -13,6 +13,8 @@ on:
       - 'package-lock.json'
       - 'workflows/deploy_static_files.yml'
 
+concurrency: 'deploy_static_files'
+
 env:
   AWS_ACCESS_KEY_ID: AKIAX44ZXNASLCNATXES
   AWS_DEFAULT_REGION: eu-central-1
@@ -24,8 +26,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Install, build and deploy
-      uses: actions/setup-node@v3
+    - uses: actions/setup-node@v3
       with:
         node-version: '18.x'
         cache: 'npm'
