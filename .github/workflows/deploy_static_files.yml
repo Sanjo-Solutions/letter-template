@@ -20,8 +20,7 @@ env:
   AWS_DEFAULT_REGION: eu-central-1
 
 jobs:
-  build:
-
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
