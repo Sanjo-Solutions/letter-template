@@ -11,6 +11,7 @@ on:
       - 'pages/*'
       - 'public/*'
       - 'package-lock.json'
+      - 'workflows/deploy_static_files.yml'
 
 env:
   AWS_ACCESS_KEY_ID: AKIAX44ZXNASLCNATXES

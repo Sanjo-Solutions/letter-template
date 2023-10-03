@@ -7,6 +7,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'functions/*'
+      - 'workflows/deploy_lambda.yml'
 
 defaults:
   run:
