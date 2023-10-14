@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.38.1",
-    "@sanjo/compose": "^2.2.1",
+    "@sanjo/compose": "^2.9.0",
     "@types/node": "^20.6.5",
     "prettier": "^3.0.3"
   },

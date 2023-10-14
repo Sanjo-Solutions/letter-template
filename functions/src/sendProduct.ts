@@ -163,6 +163,8 @@ const paymentLinkIDToData = new Map([
   ["plink_1NuaZiESBpgjLODgjW8x2MyN", data.de.business],
   ["plink_1Nufg0ESBpgjLODg5WB66feX", data.en.private],
   ["plink_1NufgRESBpgjLODgi2Gto5Aw", data.en.business],
+  // 1.99+ €
+  ["plink_1Nu0lJESBpgjLODgBmZlhzGf", data.de.private],
 ])
 
 sendgridMail.setApiKey(process.env.SENDGRID_API_KEY!)
