@@ -28,6 +28,7 @@ export function navigationItem(compose, name, path) {
 }
 
 export function isActivePage(compose, navbarItemPagePath) {
+  console.log(navbarItemPagePath, retrievePagePath(compose))
   return navbarItemPagePath === retrievePagePath(compose)
 }
 
